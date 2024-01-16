@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Data App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input {
+            margin-bottom: 16px;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stock Data App</h1>
+    </header>
+
+    <section>
+        <form id="stockForm">
+            <label for="stockId">Stock ID:</label>
+            <input type="text" id="stockId" placeholder="Enter Stock ID" required>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" required>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" required>
+
+            <button type="button" onclick="getData()">Get Data</button>
+        </form>
+
+        <div class="result" id="resultSection">
+            <!-- Result will be displayed here -->
+        </div>
+    </section>
+
+    <section>
+        <h2>Download Results</h2>
+        <button onclick="downloadFile()">Download Excel</button>
+        <p id="downloadMessage"></p>
+    </section>
+
+    <script>
+        async function getData() {
+            var stockId = document.getElementById("stockId").value;
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            try {
+                // Make an API request using JavaScript fetch()
+                const response = await fetch(`http://127.0.0.1:9000/data?_id=${stockId}&start=${startDate}&end=${endDate}`);
+                const data = await response.json();
+
+                // Check if the response is successful
+                if (response.ok) {
+                    // Update the result section with success message
+                    document.getElementById("resultSection").innerHTML = `<p>Data for ${stockId} from ${startDate} to ${endDate} loaded successfully!</p>`;
+                } else {
+                    // Update the result section with error message
+                    document.getElementById("resultSection").innerHTML = `<p>Error: ${data.error}</p>`;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                // Update the result section with a general error message
+                document.getElementById("resultSection").innerHTML = "<p>An error occurred while processing the request.</p>";
+            }
+        }
+
+        function downloadFile() {
+            // Make a request to the FastAPI /download endpoint to get the Excel file
+            window.location.href = "http://127.0.0.1:9000/download?filename=result.xlsx";
+        }
+    </script>
+</body>
+</html>
