@@ -6,3 +6,4 @@ upstox-python-sdk
 uvicorn~=0.26.0
 starlette~=0.35.1
 jinja2
+openpyxl
