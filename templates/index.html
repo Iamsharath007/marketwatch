@@ -123,7 +123,7 @@
 
         function downloadFile() {
             // Make a request to the FastAPI /download endpoint to get the Excel file
-            window.location.href = "http://127.0.0.1:8000/download?filename=result.xlsx";
+            window.location.href = `http://127.0.0.1:8000/download?filename=${stockId}.xlsx`;
         }
     </script>
 </body>
