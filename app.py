@@ -12,6 +12,7 @@ instrument_keys = pd.read_csv('instrument_keys.csv')
 instrument_keys = instrument_keys[["instrument_key", "name"]]
 templates = Jinja2Templates(directory="templates")
 
+
 def download_file(filename: str):
     return FileResponse(filename, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                         filename=filename)
@@ -26,6 +27,7 @@ app.add_middleware(
     allow_methods=["*"],  # Set this to the specific HTTP methods you want to allow
     allow_headers=["*"],  # Set this to the specific HTTP headers you want to allow
 )
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
