@@ -103,7 +103,7 @@
 
             try {
                 // Make an API request using JavaScript fetch()
-                const response = await fetch(`http://127.0.0.1:8000/data?_id=${stockId}&start=${startDate}&end=${endDate}`);
+                const response = await fetch(`/data?_id=${stockId}&start=${startDate}&end=${endDate}`);
                 const data = await response.json();
 
                 // Check if the response is successful
@@ -123,7 +123,7 @@
 
         function downloadFile() {
             // Make a request to the FastAPI /download endpoint to get the Excel file
-            window.location.href = 'http://127.0.0.1:8000/download?filename=${stockId}.xlsx';
+            window.location.href = '/download?filename=${stockId}.xlsx';
         }
     </script>
 </body>
