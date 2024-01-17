@@ -100,30 +100,7 @@
             var stockId = document.getElementById("stockId").value;
             var startDate = document.getElementById("startDate").value;
             var endDate = document.getElementById("endDate").value;
-
-            try {
-                // Make an API request using JavaScript fetch()
-                 window.location.href = `/data?_id=${stockId}&start=${startDate}&end=${endDate}`;
-                const data = await response.json();
-
-                // Check if the response is successful
-                if (response.ok) {
-                    // Update the result section with success message
-                    document.getElementById("resultSection").innerHTML = `<p>Data for ${stockId} from ${startDate} to ${endDate} loaded successfully!</p>`;
-                } else {
-                    // Update the result section with error message
-                    document.getElementById("resultSection").innerHTML = `<p>Error: ${data.error}</p>`;
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                // Update the result section with a general error message
-                document.getElementById("resultSection").innerHTML = "<p>An error occurred while processing the request.</p>";
-            }
-        }
-
-        function downloadFile() {
-            // Make a request to the FastAPI /download endpoint to get the Excel file
-            window.location.href = '/download?filename=${stockId}.xlsx';
+            window.location.href = `/data?_id=${stockId}&start=${startDate}&end=${endDate}`;
         }
     </script>
 </body>
