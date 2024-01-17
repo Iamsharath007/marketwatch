@@ -103,7 +103,7 @@
 
             try {
                 // Make an API request using JavaScript fetch()
-                const response = await fetch(`/data?_id=${stockId}&start=${startDate}&end=${endDate}`);
+                 window.location.href = `/data?_id=${stockId}&start=${startDate}&end=${endDate}`;
                 const data = await response.json();
 
                 // Check if the response is successful
