@@ -7,85 +7,98 @@
     <title>Data Retrieval</title>
 </head>
 <body>
-<style>body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
 
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 
-label {
-    margin-top: 10px;
-}
+    label {
+        margin-top: 10px;
+    }
 
-input {
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+    input {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
-button {
-    padding: 10px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    button {
+        padding: 10px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-button:hover {
-    background-color: #45a049;
-}
+    button:hover {
+        background-color: #45a049;
+    }
 </style>
 
-    <div class="container">
-        <h1>Data Retrieval</h1>
-        <form id="dataForm" action="/data" method="get">
-            <label for="numCompanies">Number of Companies:</label>
-            <input type="number" id="numCompanies" name="numCompanies" min="1" required>
+<div class="container">
+    <h1>Data Retrieval</h1>
+    <div>
+        <label for="numCompanies">Number of Companies:</label>
+        <input type="number" id="numCompanies" name="numCompanies" min="1" required>
 
-            <div id="companyInputs"></div>
+        <div id="companyInputs"></div>
 
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="start" required>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="start" required>
 
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="end" required>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="end" required>
 
-            <button type="button" onclick="addCompanyInputs()">Add Company Names</button>
-            <button type="submit">Get Data</button>
-        </form>
+        <button type="button" onclick="redirectToData()">Get Data</button>
     </div>
+</div>
 
-    <script>
-        function addCompanyInputs() {
-            const numCompanies = document.getElementById('numCompanies').value;
-            const companyInputsDiv = document.getElementById('companyInputs');
-            companyInputsDiv.innerHTML = '';
+<script>
+    document.getElementById('numCompanies').addEventListener('input', addCompanyInputs);
 
-            for (let i = 0; i < numCompanies; i++) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'companies';
-                input.placeholder = `Company ${i + 1}`;
-                companyInputsDiv.appendChild(input);
-            }
+    function addCompanyInputs() {
+        const numCompanies = document.getElementById('numCompanies').value;
+        const companyInputsDiv = document.getElementById('companyInputs');
+        companyInputsDiv.innerHTML = '';
+
+        for (let i = 0; i < numCompanies; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'companiesInput';
+            input.placeholder = `Company ${i + 1}`;
+            companyInputsDiv.appendChild(input);
         }
-    </script>
+    }
+
+    function redirectToData() {
+        const numCompanies = document.getElementById('numCompanies').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const companyInputs = document.getElementsByName('companiesInput');
+        const companies = Array.from(companyInputs).map(input => input.value).join(',');
+
+        const url = `/data?numCompanies=${numCompanies}&companies=${companies}&start=${startDate}&end=${endDate}`;
+        window.location.href = url;
+    }
+</script>
 </body>
 </html>
