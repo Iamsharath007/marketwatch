@@ -10,7 +10,6 @@ result = instrument_keys[instrument_keys['name'] == "INDIAN RAIL TOUR CORP LTD"]
 # print(result)
 data = upstock_app.get_historical_candle_data1('NSE_EQ|INE780C01023', 'day', '2024-01-17', '2024-01-01', 'v2')
 
-
 # print(data)
 data_dict = {}
 def extractor(_id, start, end, instrument_keys):
@@ -40,12 +39,11 @@ def extractor(_id, start, end, instrument_keys):
         data_dict[(date, 'percen')][_id] = f"{round(((data[4] - data[1]) / data[1]) * 100, 3)}%"
 
     data_df = pd.DataFrame.from_dict(data_dict)
-    data_df.transpose().to_excel('output.xlsx')
+    data_df.to_excel('output.xlsx')
 
 
 def test_new_format():
     import pandas as pd
-
 
 test_new_format()
 
@@ -53,11 +51,6 @@ test_new_format()
 
 # Assuming you have already defined the 'extractor' function and 'instrument_keys'
 # Extract data for the first DataFrame
-df1 = extractor("INDIAN RAIL TOUR CORP LTD", "2024-01-01", "2024-01-17", instrument_keys)
-#
-# # Extract data for the second DataFrame
-df2 = extractor("ZEE ENTERTAINMENT ENT LTD", "2024-01-01", "2024-01-17", instrument_keys)
-#
 # # Add heading for the first DataFrame
 # df1_heading = "Indian Rail Tour Corp Ltd"
 # df1.columns = [f'{df1_heading}_{col}' for col in df1.columns]
