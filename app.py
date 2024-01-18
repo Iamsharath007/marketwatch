@@ -8,11 +8,10 @@ import uvicorn
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
-
-
 instrument_keys = pd.read_csv('instrument_keys.csv')
 instrument_keys = instrument_keys[["instrument_key", "name"]]
 templates = Jinja2Templates(directory="templates")
+
 
 def extractor(_id, start, end, instrument_keys, data_dict):
     result = instrument_keys[instrument_keys['name'] == f"{_id}"]["instrument_key"].iloc[0]
@@ -63,22 +62,22 @@ async def read_root(request: Request):
         raise HTTPException(status_code=404, detail="index.html not found")
 
 
-
-
 @app.get("/data")
-async def get_data(companies:list, start: str, end: str):
+async def get_data(companies: str, start: str, end: str):
     data_dict = {}
+    companies = companies.split(',')
+    print(companies)
     for company in companies:
         extractor(company, start, end, instrument_keys, data_dict)
     data_df = pd.DataFrame.from_dict(data_dict)
     excel_buffer = io.BytesIO()
-    data_df.to_excel(excel_buffer, index=False)
+    data_df.to_excel(excel_buffer)
     excel_buffer.seek(0)
     return Response(
-            content=excel_buffer.read(),
-            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f"attachment; filename=result.xlsx"}
-        )
+        content=excel_buffer.read(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename=result.xlsx"}
+    )
 
 
 uvicorn.run(app)
