@@ -21,17 +21,34 @@ def extractor(_id, start, end, instrument_keys):
         print(f"Error: {response.status_code} - {response.text}")
         return
     datas = response.data.candles
-    data_dict = {"Date": [], "Open": [], "Close": [], "Percentage": []}
+    data_dict = {}
+    print(data_dict)
     for data in datas:
         date = data[0].split("T")[0]
-        data_dict["Date"].append(date)
+        data_dict[date] = date
         data_dict["Open"].append(data[1])
         data_dict["Close"].append(data[4])
         data_dict["Percentage"].append(f"{round(((data[4] - data[1]) / data[1]) * 100, 3)}%")
     return pd.DataFrame(data_dict)
 
 
-import pandas as pd
+def test_new_format():
+    import pandas as pd
+    test_dict = {'day 1': {'reliance': {'open': 0, 'close': 0, 'rate': 0},
+                           'tata': {'open': 0, 'close': 0, 'rate': 0},
+                           'iocl': {'open': 0, 'close': 0, 'rate': 0}
+                           },
+                 'day 2': {'reliance': {'open': 0, 'close': 0, 'rate': 0},
+                           'tata': {'open': 0, 'close': 0, 'rate': 0},
+                           'iocl': {'open': 0, 'close': 0, 'rate': 0}
+                           },
+                 'day 3': {'reliance': {'open': 0, 'close': 0, 'rate': 0},
+                           'tata': {'open': 0, 'close': 0, 'rate': 0},
+                           'iocl': {'open': 0, 'close': 0, 'rate': 0}
+                           },
+                 }
+    pd.DataFrame(test_dict).to_excel()
+
 
 # Assuming you have already defined the 'extractor' function and 'instrument_keys'
 # Extract data for the first DataFrame
@@ -62,11 +79,11 @@ worksheet.merge_range(0, 0, 0, df1.shape[1] - 1, df1_heading, workbook.add_forma
 df1.to_excel(writer, sheet_name='Sheet1', index=False, startrow=1, startcol=0, header=False)
 
 # Write the heading for the second DataFrame and span the columns
-worksheet.merge_range(0, df1.shape[1], 0, df1.shape[1] + df2.shape[1] - 1, df2_heading, workbook.add_format({'bold': True}))
+worksheet.merge_range(0, df1.shape[1], 0, df1.shape[1] + df2.shape[1] - 1, df2_heading,
+                      workbook.add_format({'bold': True}))
 
 # Write the DataFrame to the Excel file
 df2.to_excel(writer, sheet_name='Sheet1', index=False, startrow=1, startcol=df1.shape[1], header=False)
 
 # Close the Excel writer to save the changes
 writer._save()
-
