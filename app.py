@@ -8,6 +8,7 @@ import uvicorn
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
+
 instrument_keys = pd.read_csv('instrument_keys.csv')
 instrument_keys = instrument_keys[["instrument_key", "name"]]
 templates = Jinja2Templates(directory="templates")
