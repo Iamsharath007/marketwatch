@@ -47,7 +47,10 @@ def test_new_format():
                            'iocl': {'open': 0, 'close': 0, 'rate': 0}
                            },
                  }
-    pd.DataFrame(test_dict).to_excel()
+    pd.DataFrame(test_dict).to_excel("test.xlsx")
+
+test_new_format()
+
 
 
 # Assuming you have already defined the 'extractor' function and 'instrument_keys'
