@@ -16,9 +16,12 @@ templates = Jinja2Templates(directory="templates")
 
 
 def search_suggestions(target):
-    target = target.lower()
-    matches = {word for word in symbol_names if target in str(word).lower()}
-    return matches
+    try:
+        target = target.lower()
+        matches = {word for word in symbol_names if target in str(word).lower()}
+        return matches
+    except:
+        return {}
 
 
 def extractor(_id, start, end, instrument_keys, data_dict):
