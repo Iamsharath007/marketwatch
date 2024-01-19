@@ -93,6 +93,8 @@ async def get_data(companies: str, start: str, end: str):
 
 @app.get('/suggest')
 async def suggest(query: str):
+    if not query:
+        return {'suggestions': {}}
     results = search_suggestions(query)
     return {'suggestions': results}
 
