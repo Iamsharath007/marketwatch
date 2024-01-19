@@ -10,7 +10,15 @@ from starlette.templating import Jinja2Templates
 
 instrument_keys = pd.read_csv('instrument_keys.csv')
 instrument_keys = instrument_keys[["instrument_key", "name"]]
+symbol_names = instrument_keys['name']
+
 templates = Jinja2Templates(directory="templates")
+
+
+def search_suggestions(target):
+    target = target.lower()
+    matches = {word for word in symbol_names if target in str(word).lower()}
+    return matches
 
 
 def extractor(_id, start, end, instrument_keys, data_dict):
@@ -78,6 +86,12 @@ async def get_data(companies: str, start: str, end: str):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f"attachment; filename=result.xlsx"}
     )
+
+
+@app.get('/suggest')
+async def suggest(query: str):
+    results = search_suggestions(query)
+    return {'suggestions': results}
 
 
 uvicorn.run(app)
