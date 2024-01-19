@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import upstox_client
 import pandas as pd
-import uvicorn
+
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 
@@ -99,4 +99,4 @@ async def suggest(query: str):
     return {'suggestions': results}
 
 
-uvicorn.run(app)
+
